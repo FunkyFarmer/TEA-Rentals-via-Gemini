@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEA Rentals | Curated for the Moment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500&family=Raleway:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF8F5;
+            --text-primary: #1A1A1A;
+            --accent-gold: #C8A96E;
+            --accent-espresso: #3D3530;
+            --surface-color: #FFFFFF;
+            --border-color: #E8E2D9;
+            
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-accent: 'Raleway', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .wordmark {
+            font-family: var(--font-heading);
+            font-weight: 500;
+        }
+
+        .label {
+            font-family: var(--font-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        nav.scrolled {
+            background: var(--bg-color);
+            box-shadow: 0 2px 10px rgba(26, 26, 26, 0.05);
+            padding: 1rem 5%;
+        }
+
+        nav.scrolled .wordmark, nav.scrolled .nav-links a {
+            color: var(--text-primary);
+        }
+
+        .wordmark {
+            font-size: 1.5rem;
+            color: #fff;
+            transition: color 0.4s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: #fff;
+            transition: color 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled .hamburger span {
+            background-color: var(--text-primary);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+
+        .mobile-menu a {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--text-primary);
+        }
+
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(29, 22, 18, 0.45);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-content .label {
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--accent-gold);
+            color: #fff;
+            font-family: var(--font-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .btn:hover {
+            background: var(--accent-gold);
+            color: var(--surface-color);
+        }
+
+        .intro-strip {
+            padding: 4rem 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .pillar {
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--accent-espresso);
+        }
+
+        .divider {
+            width: 1px;
+            height: 40px;
+            background-color: var(--accent-gold);
+            opacity: 0.5;
+        }
+
+        section {
+            padding: 8rem 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            color: var(--accent-espresso);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .category {
+            margin-bottom: 6rem;
+        }
+
+        .category-banner {
+            height: 60vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 3rem;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .category-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(29, 22, 18, 0.4);
+        }
+
+        .category-banner h3 {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(26, 26, 26, 0.05);
+        }
+
+        .card-img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-content h4 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content p {
+            font-size: 0.9rem;
+            color: var(--accent-espresso);
+            margin-bottom: 1.5rem;
+        }
+
+        .inquire-link {
+            font-family: var(--font-accent);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-img {
+            width: 100%;
+            height: 80vh;
+            object-fit: cover;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            color: var(--accent-espresso);
+        }
+
+        .quote {
+            font-family: var(--font-heading);
+            font-style: italic;
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .inquire-section {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 1rem 0;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            background: transparent;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-bottom-color: var(--accent-gold);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent-gold);
+            color: var(--accent-espresso);
+            border: none;
+            padding: 1.2rem;
+            font-family: var(--font-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: #b59860;
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: var(--accent-espresso);
+        }
+
+        .contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 5%;
+            border-top: 1px solid var(--accent-gold);
+            background: var(--surface-color);
+        }
+
+        footer .wordmark {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        footer p {
+            color: var(--accent-espresso);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .intro-strip {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .divider {
+                width: 40px;
+                height: 1px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-img {
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="#home" class="wordmark">TEA Rentals</a>
+        <div class="nav-links">
+            <a href="#catalogue">Collections</a>
+            <a href="#about">About</a>
+            <a href="#inquire">Inquire</a>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#catalogue" class="mobile-link">Collections</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#inquire" class="mobile-link">Inquire</a>
+    </div>
+
+    <section id="home" class="hero fade-up">
+        <div class="hero-content">
+            <span class="label">By The Event Architect</span>
+            <h1>Every Table Tells a Story</h1>
+            <p>Premium lifestyle curation and rental collections for events that deserve to be remembered.</p>
+            <a href="#catalogue" class="btn">Explore Collections</a>
+        </div>
+    </section>
+
+    <div class="intro-strip fade-up">
+        <div class="pillar">Tablescapes — Composed with intention</div>
+        <div class="divider"></div>
+        <div class="pillar">Curated Entrances — First impressions, elevated</div>
+        <div class="divider"></div>
+        <div class="pillar">Lounge & Photo Setups — Spaces that feel alive</div>
+    </div>
+
+    <section id="catalogue">
+        <div class="section-header fade-up">
+            <span class="label">Our Collections</span>
+            <h2>Designed for Every Occasion</h2>
+            <p>Each collection is available for rental. Styled to complement. Delivered with care.</p>
+        </div>
+
+        <div class="category fade-up">
+            <div class="category-banner" style="background-image: url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&q=80&w=1920');">
+                <h3>Tablescapes</h3>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800" alt="The Ivory Atelier" class="card-img">
+                    <div class="card-content">
+                        <h4>The Ivory Atelier</h4>
+                        <p>A monochromatic tonescape of linen, bone china, and hand-poured taper candles</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800" alt="Oro Verde" class="card-img">
+                    <div class="card-content">
+                        <h4>Oro Verde</h4>
+                        <p>Gold-leafed flatware, botanical runners, and smoked glassware for garden ceremonies</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d14de8a1?auto=format&fit=crop&q=80&w=800" alt="The Obsidian Dinner" class="card-img">
+                    <div class="card-content">
+                        <h4>The Obsidian Dinner</h4>
+                        <p>Matte black charger plates, dark floral centerpieces, and moody ambient settings</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category fade-up">
+            <div class="category-banner" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=1920');">
+                <h3>Curated Entrances</h3>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800" alt="The Grand Threshold" class="card-img">
+                    <div class="card-content">
+                        <h4>The Grand Threshold</h4>
+                        <p>Towering arch installation with draped fabric, florals, and cascading greenery</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800" alt="La Lumière Entry" class="card-img">
+                    <div class="card-content">
+                        <h4>La Lumière Entry</h4>
+                        <p>Warm ambient lighting columns with statement welcome signage and petal carpet</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" alt="The Studio Gate" class="card-img">
+                    <div class="card-content">
+                        <h4>The Studio Gate</h4>
+                        <p>Minimalist editorial entrance with sculptural props and branded easel displays</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category fade-up">
+            <div class="category-banner" style="background-image: url('https://images.unsplash.com/photo-1505909182942-e2f09aee3e89?auto=format&fit=crop&q=80&w=1920');">
+                <h3>Stylized Photo Walls</h3>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&q=80&w=800" alt="The Pampas Frame" class="card-img">
+                    <div class="card-content">
+                        <h4>The Pampas Frame</h4>
+                        <p>Dried botanicals, pampas grass, and warm-toned draping behind a minimalist frame structure</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1582582621959-48d27397dc69?auto=format&fit=crop&q=80&w=800" alt="Miroir Doré" class="card-img">
+                    <div class="card-content">
+                        <h4>Miroir Doré</h4>
+                        <p>Gold arch mirror wall with floral accents and soft drapery for portrait-perfect moments</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800" alt="The Editorial Flat" class="card-img">
+                    <div class="card-content">
+                        <h4>The Editorial Flat</h4>
+                        <p>Clean white paneled backdrop with geometric props and curated object arrangements</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category fade-up">
+            <div class="category-banner" style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=1920');">
+                <h3>Lounge Setups</h3>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800" alt="The Salon Nook" class="card-img">
+                    <div class="card-content">
+                        <h4>The Salon Nook</h4>
+                        <p>Velvet seating, brass side tables, and layered rugs for intimate gathering corners</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=800" alt="Plein Air Lounge" class="card-img">
+                    <div class="card-content">
+                        <h4>Plein Air Lounge</h4>
+                        <p>Rattan and linen outdoor lounge configuration with canopy and low table styling</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800" alt="The Noir Corner" class="card-img">
+                    <div class="card-content">
+                        <h4>The Noir Corner</h4>
+                        <p>Deep-toned modular seating, dark wood trays, and ambient candlescape arrangements</p>
+                        <a href="#inquire" class="inquire-link">Inquire About This</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="about-grid fade-up">
+            <img src="https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&q=80&w=800" alt="About TEA Rentals" class="about-img">
+            <div class="about-content">
+                <span class="label">The Event Architect</span>
+                <h2>Behind Every Detail</h2>
+                <p>TEA was born from a belief that events are not just occasions but choreographed experiences. Every detail is a deliberate choice, reflecting a commitment to aesthetics that transcend the ordinary and embrace the extraordinary.</p>
+                <p>Each collection in TEA Rentals is assembled with the same discipline as a fashion editorial. Nothing is accidental. Everything is considered. We source, curate, and refine our pieces to ensure they speak a language of quiet luxury and timeless elegance.</p>
+                <p>TEA Rentals exists to give every client access to the kind of styling once reserved for high-end productions. The result is always a space that feels both elevated and entirely personal, transforming fleeting moments into enduring memories.</p>
+                <p class="quote">"We do not decorate. We curate. Intentionally."</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="inquire">
+        <div class="inquire-section fade-up">
+            <div class="section-header">
+                <span class="label">Get in Touch</span>
+                <h2>Let's Build Your Event</h2>
+                <p>Tell us about your occasion and we will get back to you within 24 hours.</p>
+            </div>
+            
+            <form id="inquiryForm" onsubmit="event.preventDefault(); submitForm();">
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <select required>
+                        <option value="" disabled selected>Event Type</option>
+                        <option value="Corporate Event">Corporate Event</option>
+                        <option value="Social Celebration">Social Celebration</option>
+                        <option value="Wedding">Wedding</option>
+                        <option value="Debut">Debut</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select required>
+                        <option value="" disabled selected>Collection of Interest</option>
+                        <option value="Tablescapes">Tablescapes</option>
+                        <option value="Curated Entrance">Curated Entrance</option>
+                        <option value="Photo Wall">Photo Wall</option>
+                        <option value="Lounge Setup">Lounge Setup</option>
+                        <option value="Full Package">Full Package</option>
+                        <option value="Not Sure Yet">Not Sure Yet</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Message / Additional Details" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="submitBtn">Send Inquiry</button>
+            </form>
+
+            <div class="contact-info">
+                <p>Response within 24 hours. For urgent inquiries, reach us directly.</p>
+                <div class="contact-icons">
+                    <span>✉ farrah@yourservice.ph</span>
+                    <span>☏ +63 (931) 056-7843</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <span class="wordmark">TEA Rentals</span>
+        <p>Curated for the Moment. Designed for Memory.</p>
+        <div class="footer-links">
+            <a href="#catalogue">Collections</a>
+            <a href="#about">About</a>
+            <a href="#inquire">Inquire</a>
+        </div>
+        <p class="copyright" style="margin-bottom: 0.5rem;">Instagram : The Event Architect</p>
+        <p class="copyright">© 2026 TEA Rentals. By The Event Architect.</p>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(element => {
+            observer.observe(element);
+        });
+
+        function submitForm() {
+            const btn = document.getElementById('submitBtn');
+            btn.textContent = 'Inquiry Sent ✓';
+            btn.style.background = '#3D3530';
+            btn.style.color = '#C8A96E';
+            setTimeout(() => {
+                document.getElementById('inquiryForm').reset();
+                btn.textContent = 'Send Inquiry';
+                btn.style.background = 'var(--accent-gold)';
+                btn.style.color = 'var(--accent-espresso)';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
